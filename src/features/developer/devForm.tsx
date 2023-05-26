@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -11,27 +10,13 @@ import {
   FormMessage,
 } from "components/ui/form";
 import { Input } from "components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "components/ui/select";
 import { Button } from "components/ui/button";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "components/ui/accordion";
+import { useSession } from "next-auth/react";
 
 const formSchema = z.object({
-  firstName: z
-    .string({
-      required_error: "First name must be at least 2 characters.",
-    })
-    .nonempty(),
+  firstName: z.string().min(2, {
+    message: "First name must be at least 2 characters.",
+  }),
   lastName: z.string().min(2, {
     message: "Last name must be at least 2 characters.",
   }),
@@ -44,110 +29,37 @@ const formSchema = z.object({
   location: z.string().min(2, {
     message: "Location must be at least 2 characters.",
   }),
-  skills: z.array(z.string()).min(1, {
-    message: "Please select at least one skill.",
+  dateOfBirth: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, {
+    message: "Invalid date of birth. Please use the format YYYY-MM-DD.",
   }),
-  experience: z
-    .array(
-      z.object({
-        company: z.string().min(2, {
-          message: "Company name must be at least 2 characters.",
-        }),
-        position: z.string().min(2, {
-          message: "Position must be at least 2 characters.",
-        }),
-        startDate: z.date().nullable(),
-        endDate: z.date().nullable(),
-      })
-    )
-    .min(1, {
-      message: "Please add at least one experience entry.",
-    }),
-  education: z
-    .array(
-      z.object({
-        institution: z.string().min(2, {
-          message: "Institution name must be at least 2 characters.",
-        }),
-        degree: z.string().min(2, {
-          message: "Degree must be at least 2 characters.",
-        }),
-        fieldOfStudy: z.string().min(2, {
-          message: "Field of study must be at least 2 characters.",
-        }),
-        startDate: z.date().nullable(),
-        endDate: z.date().nullable(),
-      })
-    )
-    .min(1, {
-      message: "Please add at least one education entry.",
-    }),
+  occupation: z.string().min(2, {
+    message: "Occupation must be at least 2 characters.",
+  }),
+  bio: z.string(),
 });
 export function DevForm() {
+  const { data } = useSession();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: "",
+      firstName: data?.user.name || "",
       lastName: "",
       email: "",
       phoneNumber: "",
       location: "",
-      skills: [],
-      experience: [
-        {
-          company: "",
-          position: "",
-          startDate: null,
-          endDate: null,
-        },
-      ],
-      education: [
-        {
-          institution: "",
-          degree: "",
-          fieldOfStudy: "",
-          startDate: null,
-          endDate: null,
-        },
-      ],
+      dateOfBirth: "",
+      occupation: "",
+      bio: "",
     },
   });
-  const {
-    control,
-    register,
-    formState: { errors },
-  } = form;
 
-  const {
-    fields: experienceFields,
-    append: appendExperience,
-    remove: removeExperience,
-  } = useFieldArray({
-    control,
-    name: "experience",
-  });
-  const {
-    fields: educationFields,
-    append: appendEducation,
-    remove: removeEducation,
-  } = useFieldArray({
-    control,
-    name: "education",
-  });
-
-  function onSubmit(
-    values: z.infer<typeof formSchema>,
-    event: React.FormEvent<HTMLFormElement>
-  ) {
-    event.preventDefault();
+  function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("shiit", values);
   }
   return (
     <Form {...form}>
-      <form
-        onSubmit={(event) => onSubmit(form.getValues(), event)}
-        className="space-y-8"
-      >
+      {/*  eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
           name="firstName"
@@ -157,7 +69,7 @@ export function DevForm() {
               <FormControl>
                 <Input placeholder="John" {...field} />
               </FormControl>
-              <>{errors.firstName?.message}</>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -220,172 +132,17 @@ export function DevForm() {
 
         <FormField
           control={form.control}
-          name="skills"
+          name="dateOfBirth"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Skills</FormLabel>
+              <FormLabel>Date of Birth</FormLabel>
               <FormControl>
-                <Select>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Theme" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="light">Light</SelectItem>
-                    <SelectItem value="dark">Dark</SelectItem>
-                    <SelectItem value="system">System</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Input placeholder="YYYY-MM-DD" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Accordion type="single" collapsible className="w-full">
-          {/* Experience */}
-          <AccordionItem value="item-1">
-            <AccordionTrigger>Add Experience ?</AccordionTrigger>
-            <AccordionContent>
-              <FormItem className="border p-2">
-                <FormLabel>Experience:</FormLabel>
-                {experienceFields.map((field, index) => (
-                  <div key={field.id}>
-                    <div className="flex items-center gap-2">
-                      <FormLabel>Company:</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...register(`experience.${index}.company` as const)}
-                        />
-                      </FormControl>
-                      <FormLabel>Position:</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...register(`experience.${index}.position` as const)}
-                        />
-                      </FormControl>
-                    </div>
-                    <div>
-                      <FormLabel>Start Date:</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="date"
-                          {...register(
-                            `experience.${index}.startDate` as const
-                          )}
-                        />
-                      </FormControl>
-                      <FormLabel>End Date:</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="date"
-                          {...register(`experience.${index}.endDate` as const)}
-                        />
-                      </FormControl>
-                    </div>
-
-                    <div className="mt-2 flex gap-2">
-                      <Button
-                        variant="destructive"
-                        onClick={() => removeExperience(index)}
-                        disabled={experienceFields.length === 1}
-                      >
-                        Remove Experience
-                      </Button>
-                      <Button
-                        onClick={() =>
-                          appendExperience({
-                            company: "",
-                            position: "",
-                            startDate: null,
-                            endDate: null,
-                          })
-                        }
-                      >
-                        Add Experience
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </FormItem>
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-2">
-            <AccordionTrigger>Add Education ?</AccordionTrigger>
-            <AccordionContent>
-              {/* Education */}
-              <FormItem className="border p-2">
-                <FormLabel>Education:</FormLabel>
-                {educationFields.map((field, index) => (
-                  <div key={field.id}>
-                    <div className="flex items-center gap-2">
-                      <FormLabel>Institution:</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...register(
-                            `education.${index}.institution` as const
-                          )}
-                        />
-                      </FormControl>
-                      <FormLabel>Degree:</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...register(`education.${index}.degree` as const)}
-                        />
-                      </FormControl>
-                    </div>
-                    <div>
-                      <FormLabel>Field of Study:</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...register(
-                            `education.${index}.fieldOfStudy` as const
-                          )}
-                        />
-                      </FormControl>
-                      <FormLabel>Start Date:</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="date"
-                          {...register(`education.${index}.startDate` as const)}
-                        />
-                        <h1></h1>
-                      </FormControl>
-                      <FormLabel>End Date:</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="date"
-                          {...register(`education.${index}.endDate` as const)}
-                        />
-                      </FormControl>
-                    </div>
-
-                    <div className="mt-2 flex gap-2">
-                      <Button
-                        variant="destructive"
-                        onClick={() => removeEducation(index)}
-                        disabled={educationFields.length === 1}
-                      >
-                        Remove Education
-                      </Button>
-                      <Button
-                        onClick={() =>
-                          appendEducation({
-                            institution: "",
-                            degree: "",
-                            fieldOfStudy: "",
-                            startDate: null,
-                            endDate: null,
-                          })
-                        }
-                      >
-                        Add Education
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </FormItem>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
 
         <Button type="submit">Submit</Button>
       </form>
