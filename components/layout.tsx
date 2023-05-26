@@ -5,8 +5,9 @@ import { Button } from "./ui/button";
 import { signIn } from "next-auth/react";
 import { Label } from "./ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Loader2 } from "lucide-react";
 const Navbar = () => {
-  const { data } = useSession();
+  const { data, status } = useSession();
 
   return (
     <header className="supports-backdrop-blur:bg-background/60 sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur">
@@ -41,6 +42,11 @@ const Navbar = () => {
                     <Button onClick={() => void signOut()}>Sign Out</Button>
                   </PopoverContent>
                 </Popover>
+              </div>
+            ) : status === "loading" ? (
+              <div className="flex items-center">
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Please wait
               </div>
             ) : (
               <Button onClick={() => void signIn()}>Sign in</Button>
