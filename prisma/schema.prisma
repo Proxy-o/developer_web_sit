@@ -69,28 +69,27 @@ model VerificationToken {
 }
 
 model Developer {
-    id         String    @id @default(cuid())
-    userId     String    @unique
-    user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-    firstname  String?
-    lastname   String?
-    skills     String[]
-    experience Int // Number of years of experience
-    education  String? // Educational background
-    bio        String? // Developer's bio or description
-    projects   Project[] // One-to-many relationship with projects
-    createdAt  DateTime  @default(now())
-    updatedAt  DateTime  @updatedAt
+    id        String    @id @default(cuid())
+    userId    String    @unique
+    user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+    firstname String?
+    lastname  String?
+    bio       String? // Developer's bio or description
+    phone     String?
+    address   String?
+    portfolio String?
+    projects  Project[] // One-to-many relationship with projects
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
 
     @@unique([firstname, lastname])
 }
 
 model Project {
-    id          String  @id @default(cuid())
+    id          String    @id @default(cuid())
     title       String
     description String
     images      Image[]
-
     developer   Developer @relation(fields: [developerId], references: [id], onDelete: Cascade)
     developerId String
     createdAt   DateTime  @default(now())

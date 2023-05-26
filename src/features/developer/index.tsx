@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import DevForm from "./devForm";
+import DevForm from "./components/devForm";
 
 const Index: NextPage = () => {
   return (
