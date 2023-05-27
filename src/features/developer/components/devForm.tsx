@@ -3,17 +3,9 @@ import { Input } from "components/ui/input";
 import { Label } from "components/ui/label";
 import { Textarea } from "components/ui/textarea";
 import { useForm, type SubmitHandler } from "react-hook-form";
-
-interface IFormInput {
-  firstName: string;
-  lastName: string;
-  barthDay: string;
-  email: string;
-  phone: string;
-  address: string;
-  bio?: string;
-  portfolio?: string;
-}
+import type { IFormInput } from "../types";
+import { api } from "~/utils/api";
+import { useSession } from "next-auth/react";
 
 export default function DevForm() {
   const {
@@ -21,7 +13,13 @@ export default function DevForm() {
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInput>();
-  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
+  const { data } = useSession();
+  const { mutate: addInfo } = api.developer.insertDeveloperInfo.useMutation();
+
+  const onSubmit: SubmitHandler<IFormInput> = (devinfo) => {
+    addInfo({ ...devinfo, userId: data?.user?.id || "" });
+    // console.log(data);
+  };
 
   return (
     <form
@@ -75,6 +73,7 @@ export default function DevForm() {
             minLength: 2,
             pattern: /^\S+@\S+$/i,
           })}
+          type="email"
         />
         {errors.email && (
           <h1 className="m-2 ml-2 text-red-500">This field is required</h1>
@@ -109,6 +108,23 @@ export default function DevForm() {
           })}
         />
         {errors.address && (
+          <h1 className="m-2 ml-2 text-red-500">This field is required</h1>
+        )}
+      </div>
+      <div className="mt-4 w-full">
+        <Label>
+          <strong className="text-red-500">*</strong>Birth day
+        </Label>
+        <Input
+          placeholder="YYYY-MM-DD"
+          {...register("birthDay", {
+            required: true,
+            maxLength: 100,
+            minLength: 2,
+            pattern: /^\d{4}-\d{2}-\d{2}$/,
+          })}
+        />
+        {errors.birthDay && (
           <h1 className="m-2 ml-2 text-red-500">This field is required</h1>
         )}
       </div>
