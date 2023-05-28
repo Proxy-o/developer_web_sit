@@ -66,7 +66,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <>
       <Navbar />
       <main className="container min-h-screen">{children}</main>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

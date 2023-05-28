@@ -6,6 +6,9 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import type { IFormInput } from "../types";
 import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
+import { toast } from "sonner";
+import classNames from "classnames";
+import { Loader2 } from "lucide-react";
 
 export default function DevForm() {
   const {
@@ -14,10 +17,18 @@ export default function DevForm() {
     formState: { errors },
   } = useForm<IFormInput>();
   const { data } = useSession();
-  const { mutate: addInfo } = api.developer.insertDeveloperInfo.useMutation();
+  const { mutate: addInfo, isLoading } =
+    api.developer.insertDeveloperInfo.useMutation();
 
   const onSubmit: SubmitHandler<IFormInput> = (devinfo) => {
-    addInfo({ ...devinfo, id: data?.user?.id || "" });
+    addInfo(
+      { ...devinfo, id: data?.user?.id || "" },
+      {
+        onSuccess: () => {
+          toast.success("My first toast");
+        },
+      }
+    );
     // console.log(data);
   };
 
@@ -142,7 +153,10 @@ export default function DevForm() {
         <Textarea placeholder="Bio" {...register("bio")} />
       </div>
 
-      <Button type="submit">Submit</Button>
+      <Button type="submit" disabled={isLoading}>
+        {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+        Submit
+      </Button>
     </form>
   );
 }
