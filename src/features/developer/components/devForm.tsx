@@ -17,7 +17,7 @@ export default function DevForm() {
   const { mutate: addInfo } = api.developer.insertDeveloperInfo.useMutation();
 
   const onSubmit: SubmitHandler<IFormInput> = (devinfo) => {
-    addInfo({ ...devinfo, userId: data?.user?.id || "" });
+    addInfo({ ...devinfo, id: data?.user?.id || "" });
     // console.log(data);
   };
 
@@ -34,13 +34,13 @@ export default function DevForm() {
           </Label>
           <Input
             placeholder="First Name"
-            {...register("firstName", {
+            {...register("firstname", {
               required: true,
               maxLength: 20,
               minLength: 2,
             })}
           />
-          {errors.firstName && (
+          {errors.firstname && (
             <h1 className="m-2 ml-2 text-red-500">This field is required</h1>
           )}
         </div>
@@ -50,13 +50,13 @@ export default function DevForm() {
           </Label>
           <Input
             placeholder="Last Name"
-            {...register("lastName", {
+            {...register("lastname", {
               required: true,
               maxLength: 20,
               minLength: 2,
             })}
           />
-          {errors.lastName && (
+          {errors.lastname && (
             <h1 className="m-2 ml-2 text-red-500">This field is required</h1>
           )}
         </div>
@@ -117,14 +117,14 @@ export default function DevForm() {
         </Label>
         <Input
           placeholder="YYYY-MM-DD"
-          {...register("birthDay", {
+          {...register("birthday", {
             required: true,
             maxLength: 100,
             minLength: 2,
             pattern: /^\d{4}-\d{2}-\d{2}$/,
           })}
         />
-        {errors.birthDay && (
+        {errors.birthday && (
           <h1 className="m-2 ml-2 text-red-500">This field is required</h1>
         )}
       </div>

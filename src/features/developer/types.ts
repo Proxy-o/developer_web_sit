@@ -1,11 +1,11 @@
 export type IFormInput = {
-  firstName: string;
-  lastName: string;
-  birthDay: string;
+  firstname: string;
+  lastname: string;
+  birthday: string;
   email: string;
   phone: string;
   address: string;
   bio: string;
   portfolio: string;
-  userId: string;
+  userid: string;
 };
