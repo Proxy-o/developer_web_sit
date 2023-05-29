@@ -1,4 +1,4 @@
-export type IFormInput = {
+export type persoForm = {
   firstname: string;
   lastname: string;
   birthday: string;
@@ -7,5 +7,15 @@ export type IFormInput = {
   address: string;
   bio: string;
   portfolio: string;
+  userid: string;
+};
+
+export type eduForm = {
+  school: string;
+  degree: string;
+  field: string;
+  startYear: string;
+  endYear: string;
+  description: string;
   userid: string;
 };

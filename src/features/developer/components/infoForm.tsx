@@ -3,24 +3,23 @@ import { Input } from "components/ui/input";
 import { Label } from "components/ui/label";
 import { Textarea } from "components/ui/textarea";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import type { IFormInput } from "../types";
+import type { persoForm } from "../types";
 import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
-import classNames from "classnames";
 import { Loader2 } from "lucide-react";
 
-export default function DevForm() {
+export default function InfoForm() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormInput>();
+  } = useForm<persoForm>();
   const { data } = useSession();
   const { mutate: addInfo, isLoading } =
-    api.developer.insertDeveloperInfo.useMutation();
+    api.developer.updatePersoInfo.useMutation();
 
-  const onSubmit: SubmitHandler<IFormInput> = (devinfo) => {
+  const onSubmit: SubmitHandler<persoForm> = (devinfo) => {
     addInfo(
       { ...devinfo, id: data?.user?.id || "" },
       {
@@ -29,7 +28,6 @@ export default function DevForm() {
         },
       }
     );
-    // console.log(data);
   };
 
   return (

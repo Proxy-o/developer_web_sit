@@ -1,6 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "components/ui/tabs";
 import type { NextPage } from "next";
-import DevForm from "./components/devForm";
+import InfoForm from "./components/infoForm";
+import EduForm from "./components/eduForm";
 
 const Index: NextPage = () => {
   return (
@@ -10,10 +11,15 @@ const Index: NextPage = () => {
           <TabsTrigger value="Personnel_information">
             Personnel information
           </TabsTrigger>
-          <TabsTrigger value="Pro_info">Professional information</TabsTrigger>
+          <TabsTrigger value="Edu_information">
+            Education information
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="Personnel_information">
-          <DevForm />
+          <InfoForm />
+        </TabsContent>
+        <TabsContent value="Edu_information">
+          <EduForm />
         </TabsContent>
       </Tabs>
     </div>
