@@ -27,7 +27,7 @@ export const developerRouter = createTRPCRouter({
       });
       return developer;
     }),
-  updateEduInfo: protectedProcedure
+  addEduInfo: protectedProcedure
     .input(
       z.object({
         school: z.string(),
@@ -41,12 +41,49 @@ export const developerRouter = createTRPCRouter({
     )
     .mutation(async (opts) => {
       const { input } = opts;
-      const developer = await opts.ctx.prisma.education.update({
-        where: {
-          userId: input.userId,
-        },
+      const developer = await opts.ctx.prisma.education.create({
         data: input,
       });
       return developer;
     }),
+    getEducation: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .query(async (opts) => {
+      const { input } = opts;
+      const educations = await opts.ctx.prisma.education.findMany({
+        where: {
+          userId: input.userId,
+        },
+      });
+      return educations;
+    }
+    ),
+    updateEducation: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        school: z.string(),
+        degree: z.string(),
+        field: z.string(),
+        startYear: z.string(),
+        endYear: z.string(),
+        description: z.string(),
+        userId: z.string(),
+      })
+    )
+    .mutation(async (opts) => {
+      const { input } = opts;
+      const developer = await opts.ctx.prisma.education.update({
+        where: {
+          id: input.id,
+        },
+        data: input,
+      });
+      return developer;
+    }
+    ),
 });

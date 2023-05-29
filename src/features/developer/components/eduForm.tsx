@@ -1,35 +1,50 @@
 import { Button } from "components/ui/button";
 import { Input } from "components/ui/input";
 import { Label } from "components/ui/label";
-import { Textarea } from "components/ui/textarea";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import type { eduForm } from "../types";
 import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { useEffect, useMemo } from "react";
 
 const EduForm = () => {
+  const { data } = useSession();
+  const {
+    mutate: addInfo,
+    isLoading,
+    data: initInfo,
+  } = api.developer.addEduInfo.useMutation();
+
+
+
   const {
     register,
     handleSubmit,
+    reset,
+    getValues,
+    
     formState: { errors },
   } = useForm<eduForm>();
-  const { data } = useSession();
-  const { mutate: addInfo, isLoading } =
-    api.developer.updateEduInfo.useMutation();
+  const initialValues = useMemo(() => {
+    return getValues();
+  }, [getValues]);
+
+  useEffect(() => {
+    reset(initialValues);
+  }, [reset, initialValues]);
 
   const onSubmit: SubmitHandler<eduForm> = (devinfo) => {
     addInfo(
-      { ...devinfo, userid: data?.user?.id || "" },
+      { ...devinfo, userId: data?.user?.id || "" },
       {
-        onSuccess: () => {
+        onSuccess: (info) => {
           toast.success("My first toast");
         },
       }
     );
   };
-
   return (
     <form
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
