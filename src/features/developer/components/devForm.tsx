@@ -152,11 +152,12 @@ export default function DevForm() {
         <Label>Bio</Label>
         <Textarea placeholder="Bio" {...register("bio")} />
       </div>
-
-      <Button type="submit" disabled={isLoading}>
-        {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-        Submit
-      </Button>
+      <div className="mt-6 flex w-full justify-center ">
+        <Button type="submit" disabled={isLoading} className="">
+          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          Submit
+        </Button>
+      </div>
     </form>
   );
 }
