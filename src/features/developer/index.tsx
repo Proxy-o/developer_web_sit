@@ -30,9 +30,12 @@ const Index: NextPage = () => {
           <div className="mb-8">
             <EduForm />
           </div>
-          {eduInfos?.map((eduInfo) => (
-            <EduCard key={eduInfo.id} eduInfo={eduInfo} />
-          ))}
+          {eduInfos
+            ?.slice(0)
+            .reverse()
+            .map((eduInfo) => (
+              <EduCard key={eduInfo.id} eduInfo={eduInfo} />
+            ))}
         </TabsContent>
       </Tabs>
     </div>

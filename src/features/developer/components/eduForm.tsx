@@ -12,6 +12,7 @@ import useFormPersist from "react-hook-form-persist";
 const EduForm = () => {
   const { data } = useSession();
   const { mutate: addInfo, isLoading } = api.developer.addEduInfo.useMutation();
+  const utils = api.useContext();
 
   const {
     register,
@@ -29,6 +30,9 @@ const EduForm = () => {
       {
         onSuccess: () => {
           toast.success("My first toast");
+          utils.developer.getEducation
+            .invalidate({ userId: data?.user?.id || "" })
+            .catch(console.error);
         },
       }
     );
