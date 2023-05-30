@@ -17,5 +17,5 @@ export type eduForm = {
   startYear: string;
   endYear: string;
   description: string;
-  userid: string;
+  userid?: string;
 };
