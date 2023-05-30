@@ -29,7 +29,7 @@ const EduForm = () => {
       { ...devinfo, userId: data?.user?.id || "" },
       {
         onSuccess: () => {
-          toast.success("My first toast");
+          toast.success("Education information added");
           utils.developer.getEducation
             .invalidate({ userId: data?.user?.id || "" })
             .catch(console.error);

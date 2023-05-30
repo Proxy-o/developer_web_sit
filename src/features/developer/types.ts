@@ -11,6 +11,7 @@ export type persoForm = {
 };
 
 export type eduForm = {
+  id: string;
   school: string;
   degree: string;
   field: string;

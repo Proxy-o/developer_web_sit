@@ -77,13 +77,29 @@ export const developerRouter = createTRPCRouter({
     )
     .mutation(async (opts) => {
       const { input } = opts;
-      const developer = await opts.ctx.prisma.education.update({
+      const edu = await opts.ctx.prisma.education.update({
         where: {
           id: input.id,
         },
         data: input,
       });
-      return developer;
+      return edu;
+    }
+    ),
+    deleteEducation: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async (opts) => {
+      const { input } = opts;
+      const eduDeleted = await opts.ctx.prisma.education.delete({
+        where: {
+          id: input.id,
+        },
+      });
+      return eduDeleted;
     }
     ),
 });
