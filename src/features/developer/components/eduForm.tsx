@@ -7,39 +7,27 @@ import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
-import { useEffect, useMemo } from "react";
+import useFormPersist from "react-hook-form-persist";
 
 const EduForm = () => {
   const { data } = useSession();
-  const {
-    mutate: addInfo,
-    isLoading,
-    data: initInfo,
-  } = api.developer.addEduInfo.useMutation();
-
-
+  const { mutate: addInfo, isLoading } = api.developer.addEduInfo.useMutation();
 
   const {
     register,
     handleSubmit,
-    reset,
-    getValues,
-    
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<eduForm>();
-  const initialValues = useMemo(() => {
-    return getValues();
-  }, [getValues]);
 
-  useEffect(() => {
-    reset(initialValues);
-  }, [reset, initialValues]);
+  useFormPersist("eduForm", { watch, setValue });
 
   const onSubmit: SubmitHandler<eduForm> = (devinfo) => {
     addInfo(
       { ...devinfo, userId: data?.user?.id || "" },
       {
-        onSuccess: (info) => {
+        onSuccess: () => {
           toast.success("My first toast");
         },
       }

@@ -37,6 +37,7 @@
     "react-day-picker": "^8.7.1",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.9",
+    "react-hook-form-persist": "^3.0.0",
     "sonner": "^0.4.0",
     "superjson": "1.12.2",
     "tailwind-merge": "^1.12.0",

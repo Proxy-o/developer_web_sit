@@ -8,17 +8,20 @@ import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import useFormPersist from "react-hook-form-persist";
 
 export default function InfoForm() {
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<persoForm>();
   const { data } = useSession();
   const { mutate: addInfo, isLoading } =
     api.developer.updatePersoInfo.useMutation();
-
+  useFormPersist("persoForm", { watch, setValue });
   const onSubmit: SubmitHandler<persoForm> = (devinfo) => {
     addInfo(
       { ...devinfo, id: data?.user?.id || "" },
