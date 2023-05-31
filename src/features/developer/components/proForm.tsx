@@ -3,7 +3,7 @@ import { Button } from "components/ui/button";
 import { Input } from "components/ui/input";
 import { Label } from "components/ui/label";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import type { eduForm, proForm } from "../types";
+import type { proForm } from "../types";
 import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
@@ -67,7 +67,7 @@ export default function ProForm() {
             placeholder="Description"
             {...register("description", {
               required: true,
-              maxLength: 20,
+              maxLength: 1000,
               minLength: 2,
             })}
           />

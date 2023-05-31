@@ -122,7 +122,7 @@ export const developerRouter = createTRPCRouter({
       return project;
     }
     ),
-    getProject: protectedProcedure
+    getProjects: protectedProcedure
     .input(
       z.object({
         userId: z.string(),

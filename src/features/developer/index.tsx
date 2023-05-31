@@ -6,10 +6,14 @@ import EduCard from "./components/eduCard";
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import ProForm from "./components/proForm";
+import ProjectCard from "./components/projectCard";
 
 const Index: NextPage = () => {
   const { data } = useSession();
   const { data: eduInfos } = api.developer.getEducation.useQuery({
+    userId: data?.user?.id || "",
+  });
+  const { data: proInfos } = api.developer.getProjects.useQuery({
     userId: data?.user?.id || "",
   });
 
@@ -43,6 +47,15 @@ const Index: NextPage = () => {
         </TabsContent>
         <TabsContent value="Pro_information">
           <ProForm />
+          <h1 className="text-center">Projects</h1>
+          <div className="grid md:grid-cols-3 lg:grid-cols-4">
+            {proInfos
+              ?.slice(0)
+              .reverse()
+              .map((projectInfo) => (
+                <ProjectCard key={projectInfo.id} projectInfo={projectInfo} />
+              ))}
+          </div>
         </TabsContent>
       </Tabs>
     </div>
