@@ -87,7 +87,7 @@ model Education {
     startYear   String
     endYear     String
     description String
-    userId      String   
+    userId      String
     user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
@@ -99,8 +99,10 @@ model Project {
     id          String   @id @default(cuid())
     title       String
     description String
+    demo_link   String
+    code_repo   String
     images      Image[]
-    developerId String
+    userId      String
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
 }

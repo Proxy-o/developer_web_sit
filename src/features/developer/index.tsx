@@ -5,6 +5,7 @@ import EduForm from "./components/eduForm";
 import EduCard from "./components/eduCard";
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
+import ProForm from "./components/proForm";
 
 const Index: NextPage = () => {
   const { data } = useSession();
@@ -15,12 +16,15 @@ const Index: NextPage = () => {
   return (
     <div className=" my-10 drop-shadow-sm">
       <Tabs defaultValue="Personnel_information">
-        <TabsList className="grid w-full grid-cols-2 gap-1">
+        <TabsList className="h-30  grid w-full grid-cols-1 gap-2 md:grid-cols-3">
           <TabsTrigger value="Personnel_information">
             Personnel information
           </TabsTrigger>
           <TabsTrigger value="Edu_information">
             Education information
+          </TabsTrigger>
+          <TabsTrigger value="Pro_information">
+            Professional information
           </TabsTrigger>
         </TabsList>
         <TabsContent value="Personnel_information">
@@ -36,6 +40,9 @@ const Index: NextPage = () => {
             .map((eduInfo) => (
               <EduCard key={eduInfo.id} eduInfo={eduInfo} />
             ))}
+        </TabsContent>
+        <TabsContent value="Pro_information">
+          <ProForm />
         </TabsContent>
       </Tabs>
     </div>

@@ -20,3 +20,11 @@ export type eduForm = {
   description: string;
   userid?: string;
 };
+
+export type proForm = {
+  title: string;
+  description: string;
+  demo_link: string;
+  code_repo: string;
+  userId?: string;
+};

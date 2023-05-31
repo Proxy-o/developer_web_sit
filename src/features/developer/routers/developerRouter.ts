@@ -27,6 +27,7 @@ export const developerRouter = createTRPCRouter({
       });
       return developer;
     }),
+    // education
   addEduInfo: protectedProcedure
     .input(
       z.object({
@@ -102,4 +103,40 @@ export const developerRouter = createTRPCRouter({
       return eduDeleted;
     }
     ),
+    // project
+    addProject: protectedProcedure
+    .input(
+      z.object({
+        title: z.string(),
+        description: z.string(),
+        demo_link: z.string(),
+        code_repo: z.string(),
+        userId: z.string(),
+      })
+    )
+    .mutation(async (opts) => {
+      const { input } = opts;
+      const project = await opts.ctx.prisma.project.create({
+        data: input,
+      });
+      return project;
+    }
+    ),
+    getProject: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .query(async (opts) => {
+      const { input } = opts;
+      const projects = await opts.ctx.prisma.project.findMany({
+        where: {
+          userId: input.userId,
+        },
+      });
+      return projects;
+    }
+    ),
+        
 });
