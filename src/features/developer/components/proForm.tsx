@@ -32,6 +32,9 @@ export default function ProForm() {
       {
         onSuccess: () => {
           toast.success("Education information added");
+          utils.developer.getProjects
+            .invalidate({ userId: data?.user?.id || "" })
+            .catch(console.error);
         },
       }
     );
@@ -112,7 +115,6 @@ export default function ProForm() {
           <h1 className="m-2 ml-2 text-red-500">This field is required</h1>
         )}
       </div>
-
       <div className="mt-6 flex w-full justify-center ">
         <Button type="submit" disabled={isLoading} className="">
           {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

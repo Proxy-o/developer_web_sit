@@ -47,7 +47,9 @@ const Index: NextPage = () => {
         </TabsContent>
         <TabsContent value="Pro_information">
           <ProForm />
-          <h1 className="text-center">Projects</h1>
+          <div className="mb-2 flex w-full justify-between border-b">
+            <h1 className="my-2 text-2xl font-bold">Projects</h1>
+          </div>
           <div className="grid md:grid-cols-3 lg:grid-cols-4">
             {proInfos
               ?.slice(0)

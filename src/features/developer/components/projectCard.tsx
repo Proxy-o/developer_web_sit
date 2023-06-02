@@ -35,23 +35,27 @@ export default function ProjectCard({ projectInfo }: { projectInfo: proForm }) {
               </div>
               <CardTitle>{projectInfo.title}</CardTitle>
             </CardHeader>
-            <CardContent className=" flex flex-col gap-2">
-              <CardDescription className="max-h-20 min-h-[2.6rem] overflow-auto   md:hidden">
+            <CardContent className="  flex flex-col gap-2">
+              <CardDescription className="z-50 max-h-20 min-h-[2.6rem]   overflow-auto md:hidden">
                 {projectInfo.description}
               </CardDescription>
-              <div className="relative z-50 -mt-8 h-8 bg-white blur-md" />
+              <div className="relative -mt-8 h-8 bg-white blur-md" />
               <Button>
-                <Link href={projectInfo.demo_link || "#"}>Demo</Link>
+                <Link href={projectInfo.demo_link || "#"} target="_blank">
+                  Demo
+                </Link>
               </Button>
               <Button>
-                <Link href={projectInfo.code_repo || "#"}>Github</Link>
+                <Link href={projectInfo.code_repo || "#"} target="_blank">
+                  Github
+                </Link>
               </Button>
             </CardContent>
           </Card>
         </TooltipTrigger>
         <TooltipContent
           side="right"
-          className="auto -ml-[20rem] max-h-52 max-w-[18rem] overflow-auto sm:ml-0"
+          className="auto  -ml-[20rem] max-h-52 max-w-[18rem] overflow-auto py-2 text-center shadow-inner sm:ml-0"
         >
           <p>{projectInfo.description}</p>
         </TooltipContent>
