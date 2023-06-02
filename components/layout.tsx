@@ -6,6 +6,7 @@ import { signIn } from "next-auth/react";
 import { Label } from "./ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Loader2 } from "lucide-react";
+import Link from "next/link";
 const Navbar = () => {
   const { data, status } = useSession();
 
@@ -14,12 +15,12 @@ const Navbar = () => {
       <div className="container flex h-14 items-center">
         <div className="mr-4 hidden md:flex">
           <nav className="flex items-center space-x-6 text-sm font-medium">
-            <a
+            <Link
               className="text-foreground/60 transition-colors hover:text-foreground/80"
-              href="/docs"
+              href="/talents"
             >
-              Documentation
-            </a>
+              Talents
+            </Link>
           </nav>
         </div>
 

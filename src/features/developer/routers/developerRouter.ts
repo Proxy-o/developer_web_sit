@@ -23,7 +23,7 @@ export const developerRouter = createTRPCRouter({
         where: {
           id: input.id,
         },
-        data: input,
+        data: {...input, role: "developer"},
       });
       return developer;
     }),
