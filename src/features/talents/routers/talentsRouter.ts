@@ -31,4 +31,20 @@ export const talentsRouter = createTRPCRouter({
         return talents;
     }
     ),
+    getTalent: protectedProcedure
+    .input(
+        z.object({
+            id: z.string(),
+        })
+    )
+    .query(async (opts) => {
+        const { input } = opts;
+        const talent = await opts.ctx.prisma.user.findUnique({
+            where: {
+                id: input.id,
+            },
+        });
+        return talent;
+    }
+    ),
 });
