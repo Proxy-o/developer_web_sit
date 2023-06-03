@@ -8,6 +8,7 @@ export const developerRouter = createTRPCRouter({
       z.object({
         firstname: z.string(),
         lastname: z.string(),
+        title: z.string(),
         birthday: z.string(),
         email: z.string(),
         phone: z.string(),
@@ -23,7 +24,7 @@ export const developerRouter = createTRPCRouter({
         where: {
           id: input.id,
         },
-        data: {...input, role: "developer"},
+        data: {...input, role: "talent"},
       });
       return developer;
     }),

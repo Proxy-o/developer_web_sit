@@ -60,6 +60,7 @@ model User {
     sessions      Session[]
     firstname     String?
     lastname      String?
+    title         String?
     birthday      String?
     bio           String?
     phone         String?

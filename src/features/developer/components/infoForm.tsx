@@ -73,6 +73,22 @@ export default function InfoForm() {
           )}
         </div>
       </div>
+      <div className="mt-2 w-full">
+        <Label>
+          <strong className="text-red-500">*</strong>Title
+        </Label>
+        <Input
+          placeholder="Title"
+          {...register("title", {
+            required: true,
+            maxLength: 20,
+            minLength: 2,
+          })}
+        />
+        {errors.title && (
+          <h1 className="m-2 ml-2 text-red-500">This field is required</h1>
+        )}
+      </div>
       <div className="mt-4 w-full">
         <Label>
           <strong className="text-red-500">*</strong>Email

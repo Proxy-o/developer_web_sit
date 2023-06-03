@@ -1,6 +1,7 @@
 export type persoForm = {
   firstname: string;
   lastname: string;
+  title: string;
   birthday: string;
   email: string;
   phone: string;

@@ -43,7 +43,7 @@ export default function Index() {
                 <div className="my-2 flex items-center  border-b ">
                   <div className="relative  h-20 w-20  ">
                     <Image
-                      src={talent.image || ""}
+                      src={talent.image || "/images/profile.png"}
                       alt={talent.name || "profile image"}
                       className="h-32 w-32 rounded-full object-contain"
                       fill
@@ -51,7 +51,7 @@ export default function Index() {
                   </div>
                   <div className="ml-5 ">
                     <div className="text-xl font-bold">{talent.name}</div>
-                    <div className="text-lg">{talent.birthday}</div>
+                    <div className="text-lg">{talent.title}</div>
                     <div className=" text-gray-400">{talent.address}</div>
                     <div className="">{talent.bio || "Bio"}</div>
                   </div>
